@@ -3,6 +3,16 @@
 Every entry must say whether apps need a rebuild to get the change, because
 that is the difference between a free fleet update and 200 store submissions.
 
+## 0.3.0 — 2026-08-06
+
+**Rebuild required** to reach users. No app code changes needed.
+
+- Default config TTL cut from 6 hours to 1. Measured: raw.githubusercontent.com
+  holds a ~4.5 minute CDN cache, so a fleet change already has a ~5 minute floor
+  before any app can see it. A 6-hour client TTL on top made the notice banner
+  too slow for the incidents it exists for. Cost is one small CDN request per
+  app per hour.
+
 ## 0.2.0 — 2026-08-06
 
 **Rebuild required** to reach users. Additive only — no app code changes needed.

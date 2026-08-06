@@ -30,7 +30,7 @@ class ShellConfigClient {
     this.manifestUrl = kDefaultManifestUrl,
     this.appId,
     this.timeout = const Duration(seconds: 6),
-    this.ttl = const Duration(hours: 6),
+    this.ttl = const Duration(hours: 1),
     http.Client? httpClient,
     Future<String> Function(String key)? assetLoader,
   }) : _http = httpClient ?? http.Client(),
@@ -39,6 +39,17 @@ class ShellConfigClient {
   final String manifestUrl;
   final String? appId;
   final Duration timeout;
+
+  /// How long a fetched snapshot is reused before the next launch or resume
+  /// refetches.
+  ///
+  /// One hour, not six. Measured 2026-08-06: raw.githubusercontent.com holds a
+  /// ~4.5 minute CDN cache, so a fleet config change already has a floor of
+  /// about five minutes before any app can see it. Stacking a long client TTL
+  /// on top of that is what turns "reach every user quickly" into "some time
+  /// today", which would make the notice banner useless for the incidents it
+  /// exists to handle. The cost of the shorter window is one small request per
+  /// app per hour against a static CDN file — negligible.
   final Duration ttl;
 
   final http.Client _http;
