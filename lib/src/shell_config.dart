@@ -34,15 +34,15 @@ class ShellConfig {
   bool flag(String key, {bool orElse = false}) => flags[key] ?? orElse;
 
   ShellConfig withSource(ShellConfigSource value) => ShellConfig(
-        schemaVersion: schemaVersion,
-        revision: revision,
-        publisher: publisher,
-        legal: legal,
-        links: links,
-        flags: flags,
-        notice: notice,
-        source: value,
-      );
+    schemaVersion: schemaVersion,
+    revision: revision,
+    publisher: publisher,
+    legal: legal,
+    links: links,
+    flags: flags,
+    notice: notice,
+    source: value,
+  );
 
   /// Parses a manifest, applying any override block for [appId] on top of the
   /// fleet defaults. Returns null only if the payload is not a JSON object at
@@ -122,15 +122,14 @@ class ShellPublisher {
   final List<String> addressLines;
 
   factory ShellPublisher.fromJson(Map<String, dynamic> m) => ShellPublisher(
-        legalName: _str(m['legalName']),
-        tradingName: _str(m['tradingName']),
-        supportEmail: _str(m['supportEmail']),
-        websiteUrl: _str(m['websiteUrl']),
-        addressLines: _list(m['addressLines'])
-            .map(_str)
-            .where((s) => s.isNotEmpty)
-            .toList(growable: false),
-      );
+    legalName: _str(m['legalName']),
+    tradingName: _str(m['tradingName']),
+    supportEmail: _str(m['supportEmail']),
+    websiteUrl: _str(m['websiteUrl']),
+    addressLines: _list(
+      m['addressLines'],
+    ).map(_str).where((s) => s.isNotEmpty).toList(growable: false),
+  );
 }
 
 class ShellLegal {
@@ -157,14 +156,14 @@ class ShellLegal {
   final bool reconsentRequired;
 
   factory ShellLegal.fromJson(Map<String, dynamic> m) => ShellLegal(
-        termsUrl: _str(m['termsUrl']),
-        privacyUrl: _str(m['privacyUrl']),
-        termsRevision: _int(m['termsRevision'], 0),
-        privacyRevision: _int(m['privacyRevision'], 0),
-        termsEffectiveDate: _str(m['termsEffectiveDate']),
-        privacyEffectiveDate: _str(m['privacyEffectiveDate']),
-        reconsentRequired: _bool(m['reconsentRequired'], false),
-      );
+    termsUrl: _str(m['termsUrl']),
+    privacyUrl: _str(m['privacyUrl']),
+    termsRevision: _int(m['termsRevision'], 0),
+    privacyRevision: _int(m['privacyRevision'], 0),
+    termsEffectiveDate: _str(m['termsEffectiveDate']),
+    privacyEffectiveDate: _str(m['privacyEffectiveDate']),
+    reconsentRequired: _bool(m['reconsentRequired'], false),
+  );
 }
 
 class ShellLink {
@@ -177,10 +176,10 @@ class ShellLink {
   bool get isValid => label.isNotEmpty && url.isNotEmpty;
 
   factory ShellLink.fromJson(Map<String, dynamic> m) => ShellLink(
-        id: _str(m['id']),
-        label: _str(m['label']),
-        url: _str(m['url']),
-      );
+    id: _str(m['id']),
+    label: _str(m['label']),
+    url: _str(m['url']),
+  );
 }
 
 /// A fleet-wide message shown inside every app. This is the only channel that

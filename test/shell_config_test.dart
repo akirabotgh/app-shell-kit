@@ -27,7 +27,8 @@ void main() {
     // not break a binary compiled a year ago.
     test('ignores unknown keys rather than failing', () {
       final config = ShellConfig.tryParse(
-          '{"revision": 2, "somethingInventedLater": {"deep": [1,2]}}');
+        '{"revision": 2, "somethingInventedLater": {"deep": [1,2]}}',
+      );
       expect(config, isNotNull);
       expect(config!.revision, 2);
     });
@@ -59,17 +60,25 @@ void main() {
       expect(config.publisher.legalName, '');
       expect(config.links, isEmpty);
       expect(config.flag('good'), isTrue);
-      expect(config.flag('bad'), isFalse,
-          reason: 'non-bool flag is dropped, not guessed');
+      expect(
+        config.flag('bad'),
+        isFalse,
+        reason: 'non-bool flag is dropped, not guessed',
+      );
       expect(config.legal.reconsentRequired, isTrue);
     });
 
-    test('returns null on unparseable input so the caller keeps its snapshot',
-        () {
-      expect(ShellConfig.tryParse('not json at all'), isNull);
-      expect(ShellConfig.tryParse('[1,2,3]'), isNull,
-          reason: 'a JSON array is not a manifest');
-    });
+    test(
+      'returns null on unparseable input so the caller keeps its snapshot',
+      () {
+        expect(ShellConfig.tryParse('not json at all'), isNull);
+        expect(
+          ShellConfig.tryParse('[1,2,3]'),
+          isNull,
+          reason: 'a JSON array is not a manifest',
+        );
+      },
+    );
 
     test('drops links missing a label or url', () {
       final config = ShellConfig.tryParse('''
@@ -113,27 +122,33 @@ void main() {
 
     test('an override merges rather than replacing the whole block', () {
       final config = ShellConfig.tryParse(manifest, appId: 'ai.rodin.special');
-      expect(config!.publisher.legalName, 'Fleet Co',
-          reason: 'overriding supportEmail must not wipe legalName');
+      expect(
+        config!.publisher.legalName,
+        'Fleet Co',
+        reason: 'overriding supportEmail must not wipe legalName',
+      );
     });
   });
 
   group('ShellNotice', () {
     test('is null unless active', () {
       final config = ShellConfig.tryParse(
-          '{"notice": {"active": false, "title": "Down"}}');
+        '{"notice": {"active": false, "title": "Down"}}',
+      );
       expect(config!.notice, isNull);
     });
 
     test('is null when active but empty', () {
       final config = ShellConfig.tryParse(
-          '{"notice": {"active": true, "title": "", "body": ""}}');
+        '{"notice": {"active": true, "title": "", "body": ""}}',
+      );
       expect(config!.notice, isNull);
     });
 
     test('parses an active notice and defaults severity to info', () {
       final config = ShellConfig.tryParse(
-          '{"notice": {"active": true, "title": "Heads up", "body": "b"}}');
+        '{"notice": {"active": true, "title": "Heads up", "body": "b"}}',
+      );
       expect(config!.notice, isNotNull);
       expect(config.notice!.title, 'Heads up');
       expect(config.notice!.severity, 'info');

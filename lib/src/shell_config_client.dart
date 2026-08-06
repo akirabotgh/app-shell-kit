@@ -33,8 +33,8 @@ class ShellConfigClient {
     this.ttl = const Duration(hours: 6),
     http.Client? httpClient,
     Future<String> Function(String key)? assetLoader,
-  })  : _http = httpClient ?? http.Client(),
-        _loadAsset = assetLoader ?? rootBundle.loadString;
+  }) : _http = httpClient ?? http.Client(),
+       _loadAsset = assetLoader ?? rootBundle.loadString;
 
   final String manifestUrl;
   final String? appId;
@@ -68,8 +68,7 @@ class ShellConfigClient {
 
   Future<ShellConfig> _fetch() async {
     try {
-      final response =
-          await _http.get(Uri.parse(manifestUrl)).timeout(timeout);
+      final response = await _http.get(Uri.parse(manifestUrl)).timeout(timeout);
       if (response.statusCode == 200) {
         final parsed = ShellConfig.tryParse(response.body, appId: appId);
         if (parsed != null) {
@@ -93,7 +92,8 @@ class ShellConfigClient {
   Future<ShellConfig> _loadBundledFallback() async {
     try {
       final raw = await _loadAsset(
-          'packages/app_shell_kit/assets/fallback/shell.json');
+        'packages/app_shell_kit/assets/fallback/shell.json',
+      );
       final parsed = ShellConfig.tryParse(raw, appId: appId);
       if (parsed != null) {
         return parsed.withSource(ShellConfigSource.fallback);
@@ -126,7 +126,8 @@ class ShellConfigClient {
     }
     try {
       final raw = await _loadAsset(
-          'packages/app_shell_kit/assets/fallback/$fallbackAsset');
+        'packages/app_shell_kit/assets/fallback/$fallbackAsset',
+      );
       return ShellDocument(raw, ShellConfigSource.fallback);
     } catch (_) {
       return const ShellDocument(

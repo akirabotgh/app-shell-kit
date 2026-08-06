@@ -40,10 +40,8 @@ class ShellSettingsPage extends StatelessWidget {
                 leading: const Icon(Icons.support_agent_outlined),
                 title: const Text('Contact support'),
                 subtitle: Text(supportEmail),
-                onTap: () => openShellLink(
-                  context,
-                  _supportMailto(supportEmail, scope),
-                ),
+                onTap: () =>
+                    openShellLink(context, _supportMailto(supportEmail, scope)),
               ),
             if (showLegal) ...[
               ListTile(

@@ -49,9 +49,7 @@ class ShellTheme {
       cardTheme: CardThemeData(
         elevation: 0,
         color: scheme.surfaceContainerLow,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       dividerTheme: const DividerThemeData(space: 1, thickness: 1),
     );

@@ -58,18 +58,16 @@ class _ShellNoticeBannerState extends State<ShellNoticeBanner> {
                   if (notice.title.isNotEmpty)
                     Text(
                       notice.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: foreground),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleSmall?.copyWith(color: foreground),
                     ),
                   if (notice.body.isNotEmpty)
                     Text(
                       notice.body,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: foreground),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: foreground),
                     ),
                 ],
               ),
@@ -91,7 +89,11 @@ class _ShellNoticeBannerState extends State<ShellNoticeBanner> {
 /// page in debug builds only, so "did my manifest change actually reach the
 /// device?" is answerable without a debugger.
 class ShellConfigSourceChip extends StatelessWidget {
-  const ShellConfigSourceChip({super.key, required this.source, required this.revision});
+  const ShellConfigSourceChip({
+    super.key,
+    required this.source,
+    required this.revision,
+  });
 
   final ShellConfigSource source;
   final int revision;

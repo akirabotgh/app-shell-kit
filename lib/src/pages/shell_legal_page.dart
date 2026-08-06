@@ -51,8 +51,9 @@ class _ShellLegalPageState extends State<ShellLegalPage> {
     final isTerms = widget.document == ShellLegalDocument.terms;
     final legal = ShellScope.of(context).config.legal;
     final revision = isTerms ? legal.termsRevision : legal.privacyRevision;
-    final effective =
-        isTerms ? legal.termsEffectiveDate : legal.privacyEffectiveDate;
+    final effective = isTerms
+        ? legal.termsEffectiveDate
+        : legal.privacyEffectiveDate;
 
     return Scaffold(
       appBar: AppBar(
@@ -74,9 +75,13 @@ class _ShellLegalPageState extends State<ShellLegalPage> {
                 if (doc.source == ShellConfigSource.fallback)
                   Container(
                     width: double.infinity,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                     child: Text(
                       'Showing the version included with this app. '
                       'Connect to the internet for the latest.',

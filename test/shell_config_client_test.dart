@@ -17,8 +17,9 @@ Future<String> _fakeAssets(String key) async {
 void main() {
   test('a successful fetch is reported as network', () async {
     final client = ShellConfigClient(
-      httpClient: MockClient((_) async =>
-          http.Response('{"revision": 42}', 200)),
+      httpClient: MockClient(
+        (_) async => http.Response('{"revision": 42}', 200),
+      ),
       assetLoader: _fakeAssets,
     );
     final config = await client.load();
@@ -26,22 +27,24 @@ void main() {
     expect(config.source, ShellConfigSource.network);
   });
 
-  test('a second load inside the TTL is served from cache without refetching',
-      () async {
-    var calls = 0;
-    final client = ShellConfigClient(
-      httpClient: MockClient((_) async {
-        calls++;
-        return http.Response('{"revision": 9}', 200);
-      }),
-      assetLoader: _fakeAssets,
-    );
-    await client.load();
-    final second = await client.load();
-    expect(calls, 1);
-    expect(second.source, ShellConfigSource.cache);
-    expect(second.revision, 9);
-  });
+  test(
+    'a second load inside the TTL is served from cache without refetching',
+    () async {
+      var calls = 0;
+      final client = ShellConfigClient(
+        httpClient: MockClient((_) async {
+          calls++;
+          return http.Response('{"revision": 9}', 200);
+        }),
+        assetLoader: _fakeAssets,
+      );
+      await client.load();
+      final second = await client.load();
+      expect(calls, 1);
+      expect(second.source, ShellConfigSource.cache);
+      expect(second.revision, 9);
+    },
+  );
 
   test('forceRefresh bypasses the cache', () async {
     var calls = 0;
@@ -72,7 +75,9 @@ void main() {
 
   test('a non-200 falls back rather than adopting an error body', () async {
     final client = ShellConfigClient(
-      httpClient: MockClient((_) async => http.Response('<html>502</html>', 502)),
+      httpClient: MockClient(
+        (_) async => http.Response('<html>502</html>', 502),
+      ),
       assetLoader: _fakeAssets,
     );
     final config = await client.load();
@@ -93,21 +98,26 @@ void main() {
     );
     await client.load();
     final second = await client.load(forceRefresh: true);
-    expect(second.revision, 5,
-        reason: 'a bad manifest push must not downgrade a running app');
+    expect(
+      second.revision,
+      5,
+      reason: 'a bad manifest push must not downgrade a running app',
+    );
     expect(second.source, ShellConfigSource.cache);
   });
 
-  test('everything failing still yields a usable config, never a throw',
-      () async {
-    final client = ShellConfigClient(
-      httpClient: MockClient((_) async => throw Exception('offline')),
-      assetLoader: (_) async => throw Exception('no bundle'),
-    );
-    final config = await client.load();
-    expect(config.source, ShellConfigSource.fallback);
-    expect(config.revision, 0);
-  });
+  test(
+    'everything failing still yields a usable config, never a throw',
+    () async {
+      final client = ShellConfigClient(
+        httpClient: MockClient((_) async => throw Exception('offline')),
+        assetLoader: (_) async => throw Exception('no bundle'),
+      );
+      final config = await client.load();
+      expect(config.source, ShellConfigSource.fallback);
+      expect(config.revision, 0);
+    },
+  );
 
   test('concurrent loads share one request', () async {
     var calls = 0;
@@ -130,7 +140,9 @@ void main() {
         assetLoader: _fakeAssets,
       );
       final doc = await client.loadDocument(
-          url: 'https://x/tos.md', fallbackAsset: 'tos.md');
+        url: 'https://x/tos.md',
+        fallbackAsset: 'tos.md',
+      );
       expect(doc.text, '# Live terms');
       expect(doc.source, ShellConfigSource.network);
     });
@@ -141,7 +153,9 @@ void main() {
         assetLoader: _fakeAssets,
       );
       final doc = await client.loadDocument(
-          url: 'https://x/tos.md', fallbackAsset: 'tos.md');
+        url: 'https://x/tos.md',
+        fallbackAsset: 'tos.md',
+      );
       expect(doc.text, '# Bundled terms');
       expect(doc.source, ShellConfigSource.fallback);
     });
@@ -152,9 +166,14 @@ void main() {
         assetLoader: _fakeAssets,
       );
       final doc = await client.loadDocument(
-          url: 'https://x/tos.md', fallbackAsset: 'tos.md');
-      expect(doc.source, ShellConfigSource.fallback,
-          reason: 'an empty legal screen fails store review');
+        url: 'https://x/tos.md',
+        fallbackAsset: 'tos.md',
+      );
+      expect(
+        doc.source,
+        ShellConfigSource.fallback,
+        reason: 'an empty legal screen fails store review',
+      );
     });
 
     test('never returns empty text, even with no bundle', () async {

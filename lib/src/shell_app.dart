@@ -67,8 +67,8 @@ class _ShellAppState extends State<ShellApp> {
   void initState() {
     super.initState();
     _ownsClient = widget.configClient == null;
-    _client = widget.configClient ??
-        ShellConfigClient(appId: widget.info.appId);
+    _client =
+        widget.configClient ?? ShellConfigClient(appId: widget.info.appId);
     _refresh();
   }
 

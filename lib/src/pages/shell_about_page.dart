@@ -33,7 +33,8 @@ class ShellAboutPage extends StatelessWidget {
           children: [
             const SizedBox(height: 24),
             Center(
-              child: icon ??
+              child:
+                  icon ??
                   Icon(
                     Icons.apps_rounded,
                     size: 64,
@@ -49,7 +50,10 @@ class ShellAboutPage extends StatelessWidget {
             ),
             if (info.tagline.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 6,
+                ),
                 child: Text(
                   info.tagline,
                   textAlign: TextAlign.center,
@@ -86,9 +90,8 @@ class ShellAboutPage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => const ShellLegalPage(
-                    document: ShellLegalDocument.terms,
-                  ),
+                  builder: (_) =>
+                      const ShellLegalPage(document: ShellLegalDocument.terms),
                 ),
               ),
             ),
@@ -119,9 +122,11 @@ class ShellAboutPage extends StatelessWidget {
             ),
             for (final link in config.links)
               ListTile(
-                leading: Icon(link.url.startsWith('mailto:')
-                    ? Icons.mail_outline
-                    : Icons.open_in_new),
+                leading: Icon(
+                  link.url.startsWith('mailto:')
+                      ? Icons.mail_outline
+                      : Icons.open_in_new,
+                ),
                 title: Text(link.label),
                 onTap: () => openShellLink(context, link.url),
               ),
@@ -139,10 +144,7 @@ class ShellAboutPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     for (final line in publisher.addressLines)
-                      Text(
-                        line,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+                      Text(line, style: Theme.of(context).textTheme.bodySmall),
                   ],
                 ),
               ),

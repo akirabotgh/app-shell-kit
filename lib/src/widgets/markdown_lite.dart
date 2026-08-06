@@ -26,13 +26,15 @@ class MarkdownLite extends StatelessWidget {
 
     void flushParagraph() {
       if (paragraph.isEmpty) return;
-      blocks.add(Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: _RichLine(
-          paragraph.toString().trim(),
-          style: theme.textTheme.bodyMedium,
+      blocks.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _RichLine(
+            paragraph.toString().trim(),
+            style: theme.textTheme.bodyMedium,
+          ),
         ),
-      ));
+      );
       paragraph.clear();
     }
 
@@ -48,52 +50,58 @@ class MarkdownLite extends StatelessWidget {
       final heading = _headingLevel(trimmed);
       if (heading > 0) {
         flushParagraph();
-        blocks.add(Padding(
-          padding: EdgeInsets.only(top: blocks.isEmpty ? 0 : 20, bottom: 8),
-          child: _RichLine(
-            trimmed.substring(heading).trim(),
-            style: _headingStyle(theme, heading),
+        blocks.add(
+          Padding(
+            padding: EdgeInsets.only(top: blocks.isEmpty ? 0 : 20, bottom: 8),
+            child: _RichLine(
+              trimmed.substring(heading).trim(),
+              style: _headingStyle(theme, heading),
+            ),
           ),
-        ));
+        );
         continue;
       }
 
       if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
         flushParagraph();
-        blocks.add(Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 6),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('•  ', style: theme.textTheme.bodyMedium),
-              Expanded(
-                child: _RichLine(
-                  trimmed.substring(2).trim(),
-                  style: theme.textTheme.bodyMedium,
+        blocks.add(
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 6),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('•  ', style: theme.textTheme.bodyMedium),
+                Expanded(
+                  child: _RichLine(
+                    trimmed.substring(2).trim(),
+                    style: theme.textTheme.bodyMedium,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ));
+        );
         continue;
       }
 
       if (trimmed.startsWith('>')) {
         flushParagraph();
-        blocks.add(Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest,
-            border: Border(
-              left: BorderSide(color: theme.colorScheme.primary, width: 3),
+        blocks.add(
+          Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              border: Border(
+                left: BorderSide(color: theme.colorScheme.primary, width: 3),
+              ),
+            ),
+            child: _RichLine(
+              trimmed.replaceFirst(RegExp(r'^>\s?'), ''),
+              style: theme.textTheme.bodySmall,
             ),
           ),
-          child: _RichLine(
-            trimmed.replaceFirst(RegExp(r'^>\s?'), ''),
-            style: theme.textTheme.bodySmall,
-          ),
-        ));
+        );
         continue;
       }
 
@@ -126,17 +134,21 @@ class MarkdownLite extends StatelessWidget {
   static TextStyle? _headingStyle(ThemeData theme, int level) {
     switch (level) {
       case 1:
-        return theme.textTheme.headlineSmall
-            ?.copyWith(fontWeight: FontWeight.w700);
+        return theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+        );
       case 2:
-        return theme.textTheme.titleLarge
-            ?.copyWith(fontWeight: FontWeight.w700);
+        return theme.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        );
       case 3:
-        return theme.textTheme.titleMedium
-            ?.copyWith(fontWeight: FontWeight.w600);
+        return theme.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        );
       default:
-        return theme.textTheme.titleSmall
-            ?.copyWith(fontWeight: FontWeight.w600);
+        return theme.textTheme.titleSmall?.copyWith(
+          fontWeight: FontWeight.w600,
+        );
     }
   }
 }
@@ -157,10 +169,12 @@ class _RichLine extends StatelessWidget {
       if (match.start > index) {
         spans.add(TextSpan(text: text.substring(index, match.start)));
       }
-      spans.add(TextSpan(
-        text: match.group(1),
-        style: const TextStyle(fontWeight: FontWeight.w700),
-      ));
+      spans.add(
+        TextSpan(
+          text: match.group(1),
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+      );
       index = match.end;
     }
     if (index < text.length) {
