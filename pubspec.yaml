@@ -1,0 +1,42 @@
+name: app_shell_kit
+description: "Shared shell for every Rodin app: standard pages, theme, branding, and the live fleet-config client that lets all apps be updated at once."
+version: 0.1.0
+homepage: https://github.com/akirabotgh/app-shell-kit
+publish_to: none
+
+environment:
+  sdk: ^3.12.2
+  flutter: ">=3.24.0"
+
+# DEPENDENCY POLICY — read before adding anything here.
+#
+# This package is compiled into every app in the fleet, on five platforms. Every
+# dependency added here is one that 200 apps inherit, and a potential break on
+# any of those platforms. `http` is pure Dart and works everywhere including
+# web, so it adds no native plugin surface.
+#
+# Do NOT add a plugin with platform channels (shared_preferences, path_provider,
+# firebase, ...) without an explicit decision: it turns a one-line shell change
+# into a five-platform build risk across the whole fleet. Config caching is
+# deliberately in-memory + bundled-asset fallback for exactly this reason.
+#
+# SANCTIONED EXCEPTION — url_launcher. It has platform channels, so it breaks
+# the rule above. Accepted because it is first-party (flutter.dev), officially
+# supports all five of our targets, and the About/Settings pages are not
+# store-compliant without a working support and website link. Every call site
+# degrades to a copyable dialog if a launch fails, so a plugin misbehaving on
+# one platform is a cosmetic downgrade rather than a dead end.
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  assets:
+    - assets/fallback/

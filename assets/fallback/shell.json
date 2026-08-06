@@ -1,0 +1,51 @@
+{
+  "$comment": "LIVE fleet config. Every Rodin app fetches this at startup. Editing this file changes all apps at once, with no rebuild and no store resubmission. Keep it small, additive, and always backward-compatible: an old app build must never crash on a new key.",
+  "schemaVersion": 1,
+  "revision": 1,
+  "updatedAt": "2026-08-06T00:00:00Z",
+
+  "publisher": {
+    "legalName": "PLACEHOLDER — registered company name",
+    "tradingName": "Rodin.AI",
+    "supportEmail": "support@swibble.ai",
+    "websiteUrl": "https://rodin.ai",
+    "addressLines": [
+      "PLACEHOLDER — registered address line 1",
+      "PLACEHOLDER — city, postcode, country"
+    ]
+  },
+
+  "legal": {
+    "termsUrl": "https://raw.githubusercontent.com/akirabotgh/app-shell-config/main/legal/tos.md",
+    "privacyUrl": "https://raw.githubusercontent.com/akirabotgh/app-shell-config/main/legal/privacy.md",
+    "termsRevision": 1,
+    "privacyRevision": 1,
+    "termsEffectiveDate": "2026-08-06",
+    "privacyEffectiveDate": "2026-08-06",
+    "reconsentRequired": false
+  },
+
+  "links": [
+    { "id": "website", "label": "Website", "url": "https://rodin.ai" },
+    { "id": "support", "label": "Contact support", "url": "mailto:support@swibble.ai" }
+  ],
+
+  "flags": {
+    "showLegalInSettings": true,
+    "showAboutPage": true,
+    "analyticsEnabled": false
+  },
+
+  "notice": {
+    "$comment": "Fleet-wide banner. Set active=true to show a message inside every app immediately — an incident notice, a maintenance window, a legal update. This is the fleet's only real-time channel to users.",
+    "active": false,
+    "severity": "info",
+    "title": "",
+    "body": "",
+    "dismissible": true
+  },
+
+  "apps": {
+    "$comment": "Per-app overrides, keyed by application id. Anything here wins over the fleet defaults above. Absent app id = fleet defaults, which is the normal case."
+  }
+}
