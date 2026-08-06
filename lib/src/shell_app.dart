@@ -58,7 +58,7 @@ class ShellApp extends StatefulWidget {
   State<ShellApp> createState() => _ShellAppState();
 }
 
-class _ShellAppState extends State<ShellApp> {
+class _ShellAppState extends State<ShellApp> with WidgetsBindingObserver {
   late final ShellConfigClient _client;
   late final bool _ownsClient;
   ShellConfig _config = const ShellConfig();
@@ -69,7 +69,23 @@ class _ShellAppState extends State<ShellApp> {
     _ownsClient = widget.configClient == null;
     _client =
         widget.configClient ?? ShellConfigClient(appId: widget.info.appId);
+    WidgetsBinding.instance.addObserver(this);
     _refresh();
+  }
+
+  /// Re-check the fleet config when the app comes back to the foreground.
+  ///
+  /// Without this, config is read once per process start. A desktop app left
+  /// open for a week, or a phone app resumed rather than cold-started, would
+  /// never see an incident notice or a terms update — which would make the
+  /// fleet's only real-time channel unreliable exactly when it matters. The
+  /// TTL inside the client means resuming is cheap: past the TTL this is one
+  /// small request, inside it there is no network call at all.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refresh();
+    }
   }
 
   Future<void> _refresh() async {
@@ -80,6 +96,7 @@ class _ShellAppState extends State<ShellApp> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     // Only close a client we created. Closing an injected one would break a
     // caller that reuses it across widgets or tests.
     if (_ownsClient) _client.dispose();
