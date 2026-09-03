@@ -40,8 +40,10 @@ class ShellSettingsPage extends StatelessWidget {
                 leading: const Icon(Icons.support_agent_outlined),
                 title: const Text('Contact support'),
                 subtitle: Text(supportEmail),
-                onTap: () =>
-                    openShellLink(context, _supportMailto(supportEmail, scope)),
+                onTap: () => openShellLink(
+                  context,
+                  shellSupportMailto(supportEmail, scope.info),
+                ),
               ),
             if (showLegal) ...[
               ListTile(
@@ -74,7 +76,7 @@ class ShellSettingsPage extends StatelessWidget {
                 leading: const Icon(Icons.info_outline),
                 title: const Text('About'),
                 subtitle: Text(
-                  '${scope.info.appName} ${scope.info.appVersion}',
+                  '${scope.info.appName} ${scope.info.versionLabel}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => Navigator.of(context).push(
@@ -88,16 +90,17 @@ class ShellSettingsPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  /// Pre-fills the subject with app identity and version. Support for 200 apps
-  /// is unworkable if the first reply is always "which app, which version?".
-  static String _supportMailto(String email, ShellScope scope) {
-    final subject = Uri.encodeComponent(
-      '${scope.info.appName} ${scope.info.appVersion} support',
-    );
-    final body = Uri.encodeComponent(
-      '\n\n---\nApp: ${scope.info.appId}\nVersion: ${scope.info.appVersion}\n',
-    );
-    return 'mailto:$email?subject=$subject&body=$body';
-  }
+/// The support mailto every app opens. Pre-fills the subject with app identity
+/// and the full version label (version, build, source commit). Support for 200
+/// apps is unworkable if the first reply is always "which app, which build?".
+String shellSupportMailto(String email, ShellAppInfo info) {
+  final subject = Uri.encodeComponent(
+    '${info.appName} ${info.versionLabel} support',
+  );
+  final body = Uri.encodeComponent(
+    '\n\n---\nApp: ${info.appId}\nVersion: ${info.versionLabel}\n',
+  );
+  return 'mailto:$email?subject=$subject&body=$body';
 }

@@ -3,6 +3,19 @@
 Every entry must say whether apps need a rebuild to get the change, because
 that is the difference between a free fleet update and 200 store submissions.
 
+## 0.4.0 — 2026-09-03
+
+**Rebuild required** to reach users. Additive — old apps compile unchanged and
+read as "unreleased" until they adopt the generated `lib/build_info.dart`.
+
+- `ShellAppInfo` gains `buildNumber` and `sourceCommit`, both optional, and a
+  `versionLabel` (`1.4.37 (812) · a3f9c2e`, or `1.0.0 (unreleased)`).
+- About, the Settings "About" row, the licence page and the support email
+  prefill all show `versionLabel`, so support can ask a user to read one
+  string off the screen and know exactly which code they are running.
+- Pairs with `app-fleet release`, which derives the version from git and writes
+  `pubspec.yaml` and `lib/build_info.dart` in one tagged commit.
+
 ## 0.3.0 — 2026-08-06
 
 **Rebuild required** to reach users. No app code changes needed.

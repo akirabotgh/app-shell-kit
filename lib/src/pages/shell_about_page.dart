@@ -63,7 +63,7 @@ class ShellAboutPage extends StatelessWidget {
             const SizedBox(height: 8),
             Center(
               child: Text(
-                'Version ${info.appVersion}',
+                'Version ${info.versionLabel}',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -114,7 +114,7 @@ class ShellAboutPage extends StatelessWidget {
               onTap: () => showLicensePage(
                 context: context,
                 applicationName: info.appName,
-                applicationVersion: info.appVersion,
+                applicationVersion: info.versionLabel,
                 applicationLegalese: publisher.legalName.isEmpty
                     ? null
                     : '© ${DateTime.now().year} ${publisher.legalName}',

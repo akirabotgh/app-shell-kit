@@ -1,6 +1,6 @@
 name: app_shell_kit
 description: "Shared shell for every Rodin app: standard pages, theme, branding, and the live fleet-config client that lets all apps be updated at once."
-version: 0.3.0
+version: 0.4.0
 homepage: https://github.com/akirabotgh/app-shell-kit
 publish_to: none
 

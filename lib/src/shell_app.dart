@@ -4,23 +4,50 @@ import 'shell_config.dart';
 import 'shell_config_client.dart';
 import 'theme/shell_theme.dart';
 
+/// The source commit an app reports before its first release has been cut.
+const String kShellUnreleasedCommit = 'unreleased';
+
 /// Identity of one app in the fleet. Supplied by the app, not the shell.
 ///
 /// [appId] must match the `ai.rodin.*` application id used by the platform
 /// builds — it is the key the fleet manifest uses for per-app overrides, so a
 /// mismatch silently means "overrides never apply".
+///
+/// [appVersion], [buildNumber] and [sourceCommit] come from the app's generated
+/// `lib/build_info.dart`, which `app-fleet release` writes. Apps built from an
+/// older template only pass [appVersion]; they read as unreleased until they
+/// adopt the generated file.
 class ShellAppInfo {
   const ShellAppInfo({
     required this.appId,
     required this.appName,
     required this.appVersion,
     this.tagline = '',
+    this.buildNumber = 0,
+    this.sourceCommit = kShellUnreleasedCommit,
   });
 
   final String appId;
   final String appName;
   final String appVersion;
   final String tagline;
+
+  /// Store build number (Android versionCode, Apple CFBundleVersion). 0 means
+  /// no release has been cut yet.
+  final int buildNumber;
+
+  /// Short hash of the commit the release was cut from.
+  final String sourceCommit;
+
+  bool get isReleased =>
+      buildNumber > 0 && sourceCommit != kShellUnreleasedCommit;
+
+  /// The one string every surface shows: `1.4.37 (812) · a3f9c2e`, or
+  /// `1.0.0 (unreleased)` before the first release. Support asks the user to
+  /// read this off the About page, so it must be the same everywhere.
+  String get versionLabel => isReleased
+      ? '$appVersion ($buildNumber) · $sourceCommit'
+      : '$appVersion (unreleased)';
 }
 
 /// Root widget for every app in the fleet.
